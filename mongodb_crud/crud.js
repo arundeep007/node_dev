@@ -18,8 +18,8 @@ console.log("hello arun welcome to the era of node js hope you find home like he
 //db.employes.insertMany([{id:5,name:"ruhul",role:"super admin"},{id:5,name:"pankaj",role:"undefined"}])
 
 
-
 //read (fetch documents by giving our conditions or as project needs)
 //for fetching all the documents in a collection
-//db.employes.find() 
+//db.employes.find()
+//new command
 
