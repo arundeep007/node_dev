@@ -77,9 +77,6 @@ app.post('/register', (request, response) => {
 
 }
 
-
-    
-
 });
 app.get('/users', (req, res) => {
 

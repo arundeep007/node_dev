@@ -3,7 +3,6 @@
 const { error, log } = require('console');
 const fs = require('fs');
 const input = process.argv
-
 const directions = input[2];
 const file = input[3];
 const data = input[4];
@@ -37,6 +36,7 @@ if (directions == 'add') {
     if(!file)
     {
         console.log('file path is missing')
+        
     }else
 
     {
