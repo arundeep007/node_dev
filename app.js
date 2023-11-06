@@ -1,20 +1,22 @@
 //entry point of app
 const express = require('express')
 const bodyParser = require('body-parser')
+const path = require('path')
+const loadPages = path.join(__dirname,'registration')
 /*const mongo = require('mongodb');
 const {MongoClient} = require('mongodb')
 
 var db=mongo.connection;*/
 const users =[];
-
-
 const app = express();
 
 const port = process.env.port || 5000;
 
-// middleware for parsing json requests 
 
+
+// middleware for parsing json requests 
 app.use(bodyParser.json());
+app.use(express.static(loadPages));
 
 //db
 
@@ -64,7 +66,6 @@ app.post('/register', (request, response) => {
         "password":password
     }
     users.push(newUser)
-
     return response.status(201).json({"message":"user successfully created",
 
     userData:newUser
@@ -84,13 +85,17 @@ app.get('/users', (req, res) => {
 
 });
 
+app.get('/signup',(req,res)=>{
+    res.sendFile(path.join(loadPages,'signup.html'));
+   // res.send("hello");
+    console.log("render signup page");
 
-
+});
 
 
 app.listen(port, () => {
 
-    console.log('Server is running on http://localhost:${port}');
+    console.log(`Server is running on http://localhost:${port}`);
     console.log("thanks")
 
 

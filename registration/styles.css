@@ -1,0 +1,85 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #e9ebee;
+  }
+  
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+  }
+  
+  .card h2 {
+    margin-bottom: 20px;
+  }
+  
+  .card form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #e91e63;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #d81b60;
+  }
+  
+  .socials {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .social {
+    margin: 0 5px;
+  }
+  
+  .social img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  a {
+    color: #e91e63;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .remember {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .remember input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  /* Responsive adjustments can be added as necessary */
+  

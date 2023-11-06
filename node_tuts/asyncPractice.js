@@ -1,22 +1,21 @@
 console.log("Start");
 console.log("Logic Start");
+const promise1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        
+       resolve("logic resoved");
+        reject("logic reject");
 
+    }, 0);
+
+})
 setTimeout(()=>
 {
     console.log("0 sec timeout");
 
 },0);
 
-const promise1 = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        console.log("logic end");
 
-       // resolve("logic resoved");
-        reject("reject");
-
-    }, 1000);
-
-})
 
 promise1.then((message)=>{
     console.log(message);
@@ -28,8 +27,14 @@ console.log(err);
 promise1.catch((message)=>
 {
     console.log(message);
+}).finally((mes)=>{
+    
+    console.log("finally occurs");
+
 });
 console.log("End");
+
+ 
 
 
 
