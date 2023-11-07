@@ -1,6 +1,4 @@
 console.log("hello arun welcome to the era of node js hope you find home like here")
-
-
 //for showing all databases 
 //cmd- show dbs
 
@@ -16,18 +14,6 @@ console.log("hello arun welcome to the era of node js hope you find home like he
 //insertMany() is used to insert multiple documents
 //insert documents in form of lists
 //db.employes.insertMany([{id:5,name:"ruhul",role:"super admin"},{id:5,name:"pankaj",role:"undefined"}])
-
-
-
-
-
-
-
-
-
-
-
-
 //R
 //read (fetch documents by giving our conditions or as project needs)
 //for fetching all the documents in a collection

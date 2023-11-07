@@ -1,0 +1,60 @@
+<ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Background and welcome text -->
+    <!-- ... -->
+
+    <!-- Profile Image -->
+    <ImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/backgroundView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Email Input -->
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProfile"
+        app:layout_constraintStart_toStartOf="@+id/backgroundView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundView"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Password Input -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+        app:layout_constraintStart_toStartOf="@+id/backgroundView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundView"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="LOGIN"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintStart_toStartOf="@+id/backgroundView"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundView"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Forgot Password and Sign Up Links -->
+    <!-- ... -->
+
+</ConstraintLayout>

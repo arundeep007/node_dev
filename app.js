@@ -15,11 +15,22 @@ const port = process.env.port || 5000;
 
 
 // middleware for parsing json requests 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(express.static(loadPages));
 
 //db
 
+app.get('/',(req,res)=>
+{
+    res.sendFile(path.join(loadPages,'signup.html'));
+   
+});
+
+app.get('/admin',(req,res)=>
+{
+    res.sendFile(path.join(loadPages,'login.html'));
+   
+});
 
 
 app.post('/register', (request, response) => {
@@ -28,8 +39,6 @@ app.post('/register', (request, response) => {
     try 
 {
 
-    
-   
     const errors = [];
     const { username, email, password } = request.body;
     console.log("new",username, email, password,"hellos");
