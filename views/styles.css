@@ -1,10 +1,16 @@
+
+h1, h2, h3 {
+  display: block;
+  margin-bottom: 10px; /* Adjust the margin as needed */
+}
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #e9ebee;
+    background-color: #1067e8;
   }
+  
   
   .card {
     background: white;
@@ -90,6 +96,41 @@ body {
   .remember input[type="checkbox"] {
     margin-right: 5px;
   }
+
+
+  
+.navbar {
+  background-color: #333;
+  padding: 10px;
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content:start;
+}
+
+
+.nav-item {
+  margin-right: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.nav-link:hover {
+  border-bottom: 2px solid white;
+}
+
+
+
+
   
   
   
