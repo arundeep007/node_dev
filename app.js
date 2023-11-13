@@ -5,30 +5,9 @@ const path = require('path')
 const loadPages = path.join(__dirname, 'registration')
 const port = process.env.port || 5000;
 const users = [];
+const {appLevelMiddleware } = require('./middleware.js');
+console.log(appLevelMiddleware);
 
-const myMiddleware = (req, res, next) => {
-
-    console.log("hello this is the middleware 1 checkin admin");
-
-    const { username, password } = req.query
-
-    if (!username) {
-        res.send('<h1>username is required</h1>');
-    } else if (!password) {
-
-        res.send('<h1>password is required</h1>');
-    } else {
-        if (username == "admin" && password == "admin") {
-            next();
-        } else {
-            res.send("<h1>credentioal provided doesn't match </h1>");
-        }
-
-    }
-
-
-
-}
 
 /*const mongo = require('mongodb');
 const {MongoClient} = require('mongodb')
@@ -46,7 +25,7 @@ app.use(bodyParser.json());
 app.use(express.static(loadPages));
 
 //using middleware for all routes
-app.use(myMiddleware);
+app.use(appLevelMiddleware);
 
 //db
 
