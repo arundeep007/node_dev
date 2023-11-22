@@ -5,8 +5,8 @@ const path = require('path')
 const loadPages = path.join(__dirname, 'registration')
 const port = process.env.port || 5000;
 const users = [];
-const {appLevelMiddleware } = require('./middleware.js');
-console.log(appLevelMiddleware);
+const { appLevelMiddleware, routerLevelMiddleware } = require('./middleware.js');
+
 
 
 /*const mongo = require('mongodb');
@@ -15,6 +15,13 @@ const {MongoClient} = require('mongodb')
 var db=mongo.connection;*/
 
 const app = express();
+
+//making route1 for routerLevelMiddleware
+
+const route1 = express.Router();
+route1.use(routerLevelMiddleware);
+
+
 
 
 //Set ejs as templating engine
@@ -28,8 +35,6 @@ app.use(express.static(loadPages));
 app.use(appLevelMiddleware);
 
 //db
-
-
 app.get('/about', (req, res) => {
 
     console.log("query parms are ", req.query.name);
@@ -145,7 +150,18 @@ app.get('/signup', (req, res) => {
     console.log("render signup page");
 
 });
+app.get('/new', routerLevelMiddleware, (req, res) => {
 
+    //for removing all extensions 
+    res.send("<h1>Hello this is latest features in your app</>")
+});
+
+route1.get('/route', routerLevelMiddleware, (req, res) => {
+
+    //for removing all extensions 
+    res.send("<h1>Hello this is routerLevelMiddleware1 in your app</>")
+});
+app.use('/', route1);
 app.get('*', (req, res) => {
 
     //for removing all extensions 
@@ -158,7 +174,4 @@ app.listen(port, () => {
 
     console.log(`Server is running on http://localhost:${port}`);
     console.log("thanks")
-
-
 });
-

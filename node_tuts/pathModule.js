@@ -36,3 +36,15 @@ fs.writeFile(`${currentPath}/ne5w.js`,'hello it is path Module',(err) => {
     }});
 
 console.log(currentPath)
+
+
+
+/* for getting current path
+const dirPath = require('path')
+const currentPath = dirPath.join(__dirname);
+const rootDirectoryPath = dirPath.parse(process.cwd()).root;
+
+console.log('Root directory path:', rootDirectoryPath);
+console.log(currentPath);
+
+*/

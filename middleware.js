@@ -34,7 +34,7 @@ const appLevelMiddleware = (req, res, next) => {
     console.log("hello this is the middleware 1 checkin admin");
 
     const { username, password } = req.query
- 
+
     if (!username) {
         res.send('<h1>username is required</h1>');
     } else if (!password) {
@@ -53,6 +53,12 @@ const appLevelMiddleware = (req, res, next) => {
 
 }
 
-module.exports = {appLevelMiddleware};
+const routerLevelMiddleware = (req, res, next) => {
+    console.log("this is a routerLevelMiddleware1");
+    next();
+}
+
+module.exports = { appLevelMiddleware,routerLevelMiddleware };
+
 
 
