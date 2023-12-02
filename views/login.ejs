@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <%- include('common/header'); %>
+<div class="card">
+  <h2>LOGIN</h2>
+  <form>
+    <input type="email" placeholder="Email" required>
+    <input type="password" placeholder="Password" required>
+    <div class="remember">
+      <input type="checkbox" id="rememberMe">
+      <label for="rememberMe">Remember me?</label>
+    </div>
+    <button type="submit">LOGIN</button>
+    <a href="#">Forgot Password?</a>
+    <p>OR</p>
+    <div class="socials">
+      <a href="#" class="social"><img src="google-icon.png" alt="Google"></a>
+      <a href="#" class="social"><img src="facebook-icon.png" alt="Facebook"></a>
+      <a href="#" class="social"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+    </div>
+    <div class="signuplink">
+      <p>Need an account? <a href="signup.html">SIGN UP</a></p>
+
+    </div>
+  </form>
+</div>
+</body>
+</html>

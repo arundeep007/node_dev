@@ -1,28 +1,46 @@
 //entry point of app
-const express = require('express')
-const bodyParser = require('body-parser')
-const path = require('path')
-const loadPages = path.join(__dirname, 'registration')
-const port = process.env.port || 5000;
+require('dotenv').config();
+const express = require('express');
+const User = require('./models/userModel');
+console.log("test str is ", process.env.testStr)
+const { validateRegistration, handleValidationErrors } = require('./validators');
+const { connectToMongoDB, closeMongoDBConnection } = require('./database');
+
+const bodyParser = require('body-parser');
+const path = require('path');
+const loadPages = path.join(__dirname, 'registration');
+const port = process.env.PORT || 4000;
 const users = [];
 const { appLevelMiddleware, routerLevelMiddleware } = require('./middleware.js');
 
 
+//db 
+//connectToMongoDB();
 
 /*const mongo = require('mongodb');
 const {MongoClient} = require('mongodb')
 
 var db=mongo.connection;*/
 
+//first of all connect to db and then perform other functions
+
+
+connectToMongoDB();
+
+console.log("hello next next ")
+console.log("hello next next ")
+console.log("hello next next ")
+console.log("hello next next ")
+
+
 const app = express();
 
 //making route1 for routerLevelMiddleware
 
+
+
 const route1 = express.Router();
 route1.use(routerLevelMiddleware);
-
-
-
 
 //Set ejs as templating engine
 app.set('view engine', 'ejs');
@@ -32,7 +50,9 @@ app.use(bodyParser.json());
 app.use(express.static(loadPages));
 
 //using middleware for all routes
-app.use(appLevelMiddleware);
+
+
+//app.use(appLevelMiddleware);
 
 //db
 app.get('/about', (req, res) => {
@@ -62,6 +82,7 @@ app.get('/home', (req, res) => {
         username: "arundeep singh g",
         email: "arun1@gmkail.com",
         skills: ["android dev", "node js", "kotlin", "mvvm"]
+
     }
 
     //also we learn and implement moddlewares to check whether the user is logged in or not or much more
@@ -78,8 +99,6 @@ app.get('/admin', (req, res) => {
 
 
 app.post('/register', (request, response) => {
-
-
 
     try {
 
@@ -120,7 +139,6 @@ app.post('/register', (request, response) => {
         users.push(newUser)
         return response.status(201).json({
             "message": "user successfully created",
-
             userData: newUser
         });
 
@@ -150,6 +168,20 @@ app.get('/signup', (req, res) => {
     console.log("render signup page");
 
 });
+
+app.get('/login', (req, res) => {
+
+    //for static html pages 
+    // res.sendFile(path.join(loadPages,'signup.html'));
+    // res.send("hello");
+
+    //for dynamic pages eg. ejs tempelates
+
+    res.render('login')
+    console.log("render Login page");
+
+});
+
 app.get('/new', routerLevelMiddleware, (req, res) => {
 
     //for removing all extensions 
@@ -168,6 +200,55 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(loadPages, '404.html'));
 });
 
+app.post('/signupr', validateRegistration, handleValidationErrors, (req, res) => {
+    try {
+        // Process registration logic (add your database logic here)
+        const { username, email, password } = req.body;
+        // ... (save user to the database, for example)
+
+        // Create a new user
+        const newUser = new User({
+            username: 'exampleUser',
+            email: 'user@example.com',
+            password: 'password123',
+        });
+        // Save the user to the database
+newUser.save()
+.then(user => {
+  console.log('User saved:', user);
+  res.status(200).json({ message: 'Registration successful',
+        data:user
+ 
+    });
+
+
+
+})
+.catch(error => {
+  console.error('Error saving user:', error);
+
+  console.log("error details are",error.name,"ss",error.code);
+
+
+  res.status(400).json({
+    message:"Error saving user",
+    error: error });
+
+
+});
+
+
+
+        
+
+
+    } catch (error) {
+        console.error('Error processing registration:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+});
+
 
 
 app.listen(port, () => {
@@ -175,3 +256,29 @@ app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
     console.log("thanks")
 });
+
+
+
+
+
+/*
+
+const { connectToMongoDB, closeMongoDBConnection } = require('./db');
+
+async function main() {
+  try {
+    await connectToMongoDB();
+
+    // Use Mongoose models and perform database operations
+    // For example: const result = await YourModel.find({});
+  } catch (error) {
+    console.error("An error occurred:", error);
+  } finally {
+    // Close the connection when done
+    await closeMongoDBConnection();
+  }
+}
+
+main();
+
+ */
