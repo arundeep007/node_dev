@@ -3,7 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const User = require('./models/userModel');
 console.log("test str is ", process.env.testStr)
-const { validateRegistration, handleValidationErrors } = require('./validators');
+const { validateRegistration,
+    handleValidationErrors,
+    validateLogin } = require('./validators');
 const { connectToMongoDB, closeMongoDBConnection } = require('./database');
 
 const bodyParser = require('body-parser');
@@ -11,7 +13,13 @@ const path = require('path');
 const loadPages = path.join(__dirname, 'registration');
 const port = process.env.PORT || 4000;
 const users = [];
-const { appLevelMiddleware, routerLevelMiddleware } = require('./middleware.js');
+const { appLevelMiddleware,
+    routerLevelMiddleware,
+    authenticateUser,
+    generateTokenMiddleware,
+    verifyTokenMiddleware
+} = require('./middleware.js');
+const { truncate } = require('fs');
 
 
 //db 
@@ -44,8 +52,14 @@ route1.use(routerLevelMiddleware);
 
 //Set ejs as templating engine
 app.set('view engine', 'ejs');
+
+//for json
 // middleware for parsing json requests 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
+
+//for forum
+app.use(bodyParser.urlencoded({ extended: true }));
+
 //it is used for loading static pages eg about.html
 app.use(express.static(loadPages));
 
@@ -156,6 +170,12 @@ app.get('/users', (req, res) => {
 
 });
 
+app.get('/notes', (req, res) => {
+
+    res.render('notes.ejs');
+
+});
+
 app.get('/signup', (req, res) => {
 
     //for static html pages 
@@ -164,23 +184,17 @@ app.get('/signup', (req, res) => {
 
     //for dynamic pages eg. ejs tempelates
 
-    res.render('signup')
+    res.render('signup', {
+        msg: '',
+        username: '',
+        email: '',
+        password: ''
+    });
     console.log("render signup page");
 
 });
 
-app.get('/login', (req, res) => {
 
-    //for static html pages 
-    // res.sendFile(path.join(loadPages,'signup.html'));
-    // res.send("hello");
-
-    //for dynamic pages eg. ejs tempelates
-
-    res.render('login')
-    console.log("render Login page");
-
-});
 
 app.get('/new', routerLevelMiddleware, (req, res) => {
 
@@ -194,52 +208,124 @@ route1.get('/route', routerLevelMiddleware, (req, res) => {
     res.send("<h1>Hello this is routerLevelMiddleware1 in your app</>")
 });
 app.use('/', route1);
-app.get('*', (req, res) => {
 
-    //for removing all extensions 
-    res.sendFile(path.join(loadPages, '404.html'));
+
+
+
+
+app.post('/login', validateLogin, handleValidationErrors, authenticateUser, generateTokenMiddleware, (req, res) => {
+
+    //for static html pages 
+    // res.sendFile(path.join(loadPages,'signup.html'));
+    // res.send("hello");
+
+    //for dynamic pages eg. ejs tempelates
+
+    //res.render('login')
+    //console.log("render Login page");
+
+    try {
+
+        //sending userdetails for test
+
+        const token = res.locals.token;
+
+        return res.status(200).json({
+            message: 'Username login Succesfully',
+            token: token
+        });
+
+
+    } catch (error) {
+        console.error('Error processing Login:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
 });
+
 
 app.post('/signupr', validateRegistration, handleValidationErrors, (req, res) => {
     try {
+
+        console.log("signup request", req)
         // Process registration logic (add your database logic here)
         const { username, email, password } = req.body;
         // ... (save user to the database, for example)
 
         // Create a new user
         const newUser = new User({
-            username: 'exampleUser',
-            email: 'user@example.com',
-            password: 'password123',
+            username: username,
+            email: email,
+            password: password,
         });
         // Save the user to the database
-newUser.save()
-.then(user => {
-  console.log('User saved:', user);
-  res.status(200).json({ message: 'Registration successful',
-        data:user
- 
-    });
+        newUser.save()
+            .then(user => {
+                console.log('User saved:', user);
+
+
+                //uncomment after ejs 
+
+                return res.render('homepage',{msg:"Registration successful"})
+               /* res.status(201).json({
+                    message: 'Registration successful',
+                    data: user
+
+                });*/
 
 
 
-})
-.catch(error => {
-  console.error('Error saving user:', error);
+            })
+            .catch(error => {
+                console.error('Error saving user:', error);
 
-  console.log("error details are",error.name,"ss",error.code);
+                //duplicacy errors
 
+                if (error.code === 11000 || error.code === 11001) {
+                    // Duplicate key error handling
 
-  res.status(400).json({
-    message:"Error saving user",
-    error: error });
-
-
-});
+                    let duplicate = "";
+                    if ("username" in error.keyPattern) {
 
 
+                        return res.render('signup', { msg: "Username already exists.", username: username, email: email, password: password });
 
-        
+                        //uncomment after ejs test 
+                        //return res.status(409).json({ error: 'Username already exists.' });
+
+                    } else if ("email" in error.keyPattern) {
+
+                       
+
+                        return  res.render('signup', { msg: 'Email already exists.', username: username, email: email, password: password });
+                          //uncomment after ejs 
+                       // return res.status(409).json({ error: 'Email already exists.' });
+
+
+                    } else {
+
+                        return res.status(409).json({ error: 'Duplicate key error with  field.' });
+                    }
+                    console.log('Duplicate key error:', error.message);
+                } else {
+                    // Handle other types of errors
+                    console.log('Other error:', error.message);
+                }
+
+                console.log("error details are", error.name, "err code", error.code);
+
+
+                res.status(400).json({
+                    message: "Error saving user",
+                    error: error
+                });
+
+
+            });
+
+
+
+
 
 
     } catch (error) {
@@ -248,6 +334,20 @@ newUser.save()
 
     }
 });
+
+//token verification
+// Use the verifyTokenMiddleware for routes that require authentication
+app.get('/verifyuser', verifyTokenMiddleware, (req, res) => {
+    // Access the authenticated user using req.user
+    res.json({ message: 'Access granted', user: req.user });
+});
+
+app.get('*', (req, res) => {
+
+    //for removing all extensions 
+    res.sendFile(path.join(loadPages, '404.html'));
+});
+
 
 
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes</title>
+  <link rel="stylesheet" href="notesstyles.css">
+</head>
+<body>
+  <%- include('common/header'); %>
+
+  <input type="text" class="search-bar" placeholder="Search notes...">
+
+  <div class="note-grid">
+    <!-- Sample Note Card (Repeat for each note) -->
+    <div class="note-card" style="background-color: #ffd700;">
+      <h3>Note Title 1</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+
+    <div class="note-card" style="background-color: #87ceeb;">
+      <h3>Note Title 2</h3>
+      <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+
+    <!-- Add more note cards as needed -->
+
+  </div>
+
+  <button class="add-note-btn">+</button>
+
+  <!-- Link to the external script file -->
+  <script src="script.js"></script>
+</body>
+</html>

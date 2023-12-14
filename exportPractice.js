@@ -1,6 +1,4 @@
-//1. we can exports using module.export 
-
-
+//1. we can exports using module.export
 const add = (a,b)=>
 {
     return a+b; 
